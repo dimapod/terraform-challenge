@@ -34,3 +34,6 @@ variable "amis" {
   }
 }
 
+variable "count-cluster" {
+	default = "3"
+}
