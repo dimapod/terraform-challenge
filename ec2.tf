@@ -1,5 +1,9 @@
 resource "aws_instance" "challenge-coreos" {
 
+/* count for cluster
+	count = "${var.count-cluster}"
+*/
+
 	ami	= "ami-75feae15"
 
 	availability_zone = ""
