@@ -4,7 +4,7 @@ resource "aws_instance" "challenge-coreos" {
 	count = "${var.count-cluster}"
 */
 
-	ami	= "ami-75feae15"
+	ami	= "ami-6dbc951e"
 
 	availability_zone = "${var.region}a"
 
@@ -21,6 +21,8 @@ resource "aws_instance" "challenge-coreos" {
 	source_dest_check           = true
 
 	user_data = "${file("cloud-config.yaml")}"
+
+	key_name = "${var.key_name}"
 
 	root_block_device {
 		volume_type           = "gp2"

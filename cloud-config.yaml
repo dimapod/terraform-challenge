@@ -5,9 +5,9 @@ write_files:
     owner: "root:root"
     content: |
       #!/bin/bash
-      echo WEAVE_PEERS=\"${peer}\" > /etc/weave.env
+      echo WEAVE_PEERS=\"$PEER$\" > /etc/weave.env
       echo WEAVEPROXY_ARGS=\"--rewrite-inspect\" >> /etc/weave.env
-      echo WEAVE_PASSWORD=\"${token}\" >> /etc/weave.env
+      echo WEAVE_PASSWORD=\"$TOKEN$\" >> /etc/weave.env
   - path: /opt/pidalio-init.sh
     permissions: 0700
     owner: "root:root"
@@ -17,22 +17,27 @@ write_files:
       NODE_FQDN=$(hostname)
       cat <<EOF > /etc/pidalio.etcd.rclone.conf
       [remote]
-      type = google cloud storage
+      type = swift
+      user = ${OS_USERNAME}
+      key = ${OS_PASSWORD}
+      auth = ${OS_AUTH_URL}
+      tenant = ${OS_TENANT_NAME}
+      region = ${OS_REGION_NAME}
       EOF
       cat <<EOF > /etc/pidalio.env
       NODE_NAME=$NODE_NAME
       NODE_FQDN=$NODE_FQDN
-      NODE_IP=$private_ipv4
-      NODE_PUBLIC_IP=$public_ipv4
-      NODE_TYPE=gce
-      NODE_STORAGE=true
+      NODE_IP=$(ip -4 addr show scope global dev eno1 | grep inet | awk '{print $2}' | cut -d / -f 1 | head -n 1)
+      NODE_PUBLIC_IP=$NODE_IP
+      NODE_TYPE=local
+      NODE_STORAGE=false
       CEPH=True
       CEPH_DISK=True
       CEPH_DISK_DEVICE=/dev/sdb
       MONITORING=True
       ETCD_NODES=3
-      PEER="${peer}"
-      PIDALIO_TOKEN=${token}
+      PEER="$PEER$"
+      PIDALIO_TOKEN=$TOKEN$
       DOMAIN=cluster.local
       PATH=/opt/bin/:/usr/bin/:/usr/sbin:$PATH
       EOF
@@ -62,7 +67,7 @@ coreos:
     reboot-strategy: "off"
   fleet:
       public-ip: "$public_ipv4"
-      metadata: "region=gce"
+      metadata: "region=local"
       etcd_servers: "http://localhost:2379"
   units:
     - name: 50-docker.network

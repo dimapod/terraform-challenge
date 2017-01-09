@@ -4,10 +4,10 @@ provider "aws" {
   region = "${var.region}"
 }
 
-//resource "aws_key_pair" "monitoring" {
-//  key_name = "${var.key_name}"
-//  public_key = "${file("${var.key_name}.pub")}"
-//}
+resource "aws_key_pair" "monitoring" {
+  key_name = "${var.key_name}"
+  public_key = "${file("${var.key_name}.pub")}"
+}
 
 
 resource "aws_vpc" "pidalio" {
