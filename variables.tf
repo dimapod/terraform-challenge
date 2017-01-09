@@ -3,12 +3,12 @@ variable "secret_key_challenge" {}
 
 variable "project" {
   type = "string"
-  default = "dpo-monitoring"
+  default = "pidalio"
 }
 
 variable "key_name" {
   type = "string"
-  default = "dpo-monitoring"
+  default = "pidalio"
 }
 
 variable "region" {

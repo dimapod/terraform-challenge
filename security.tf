@@ -1,4 +1,4 @@
-resource "aws_security_group" "monitoring" {
+resource "aws_security_group" "pidalio" {
   name = "${var.project}-sg"
   description = "${var.project} security group"
 
@@ -45,6 +45,6 @@ resource "aws_security_group" "monitoring" {
   }
 
   tags {
-    Name = "${var.project}-sg monitoring"
+    Name = "${var.project}-sg"
   }
 }
