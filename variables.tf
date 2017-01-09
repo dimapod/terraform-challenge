@@ -12,14 +12,10 @@ variable "key_name" {
 }
 
 variable "region" {
-  default = "eu-central-1"
+  default = "eu-west-1"
 }
 
-variable "profile" {
-	default = "terraform-challenge"
-}
-
-variable "vpc_id" {
+variable "vpc_cidr" {
   type = "string"
 }
 

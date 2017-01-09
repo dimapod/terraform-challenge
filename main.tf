@@ -9,8 +9,17 @@ provider "aws" {
 //  public_key = "${file("${var.key_name}.pub")}"
 //}
 
+
+resource "aws_vpc" "pidalio" {
+    cidr_block = "${var.vpc_cidr}"
+    tags {
+        Name = "${var.project} vpc"
+    }
+}
+
+
 resource "aws_subnet" "pidalio" {
-  vpc_id = "${var.vpc_id}"
+  vpc_id = "${aws_vpc.pidalio.id}"
   cidr_block = "${var.private_subnet}"
   map_public_ip_on_launch = "true"
 
@@ -19,6 +28,8 @@ resource "aws_subnet" "pidalio" {
     Project = "${var.project}"
   }
 }
+
+
 
 //resource "aws_instance" "monitoring" {
 //  key_name = "${var.key_name}"
